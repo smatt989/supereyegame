@@ -29,6 +29,8 @@ class GameMenu extends React.Component {
   componentDidMount() {
     if(document.getElementById('webgazerVideoFeed')){
         webgazer.pause()
+    }
+    if(document.getElementById('overlay')){
         document.body.removeChild(document.getElementById('overlay'));
     }
   }

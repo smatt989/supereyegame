@@ -49,7 +49,7 @@ class GamePalette extends React.Component {
         const targetX = this.props.targetPosition.get('x')
         const targetY = this.props.targetPosition.get('y')
 
-        const newTarget = this.generateSquareCoordinates(width, height, size)
+        const newTarget = this.generateSquareCoordinates(width, height, size, targetX, targetY)
 
         this.props.updateTargetPosition(newTarget.x, newTarget.y)
     }
@@ -79,8 +79,9 @@ class GamePalette extends React.Component {
     var video = document.getElementById("webgazerVideoFeed");
     if(video){
         video.style.visibility = "hidden";
-
-        var overlay = document.getElementById("overlay");
+    }
+    var overlay = document.getElementById("overlay");
+    if(overlay){
         overlay.style.visibility = "hidden";
     }
   }
