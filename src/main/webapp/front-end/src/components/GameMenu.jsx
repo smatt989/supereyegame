@@ -54,7 +54,7 @@ class GameMenu extends React.Component {
             <FormGroup onChange={this.changeInput}>
               <ControlLabel><b>Control game with:</b></ControlLabel>
               <br />
-              <Radio name="radioGroup" inline value={MOUSE} defaultChecked>
+              <Radio name="radioGroup" inline value={MOUSE} checked={this.props.gameInput == MOUSE}>
                 Mouse
               </Radio>
               {' '}
