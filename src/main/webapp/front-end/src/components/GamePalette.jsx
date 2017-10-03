@@ -9,7 +9,7 @@ import {
 import { LinkContainer } from 'react-router-bootstrap';
 import { updateCursorPosition, updateTargetPosition, endGame } from '../actions.js';
 import TargetBoxContainer from './TargetBox.jsx';
-import { MOUSE, EYES } from '../utilities.js'
+import { MOUSE, EYES, TOBII4C } from '../utilities.js'
 
 class GamePalette extends React.Component {
 

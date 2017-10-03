@@ -11,7 +11,7 @@ import {
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { startGame, setGameInput } from '../actions.js';
-import { MOUSE, EYES } from '../utilities.js'
+import { MOUSE, EYES, TOBII4C } from '../utilities.js'
 
 
 class GameMenu extends React.Component {
@@ -62,6 +62,10 @@ class GameMenu extends React.Component {
               {' '}
               <Radio name="radioGroup" inline value={EYES} checked={this.props.gameInput == EYES}>
                 Eyes
+              </Radio>
+              {' '}
+              <Radio name="radioGroup" inline value={TOBII4C} checked={this.props.gameInput == TOBII4C}>
+                Tobii 4C
               </Radio>
             </FormGroup>
             <Button onClick={this.props.startGame}>Start Game</Button>

@@ -5,6 +5,7 @@ var _ = require('lodash');
 
 export const EYES = "eyes"
 export const MOUSE = "mouse"
+export const TOBII4C = "tobii4c"
 
 
 export var authenticationHeader = 'bee-session-key';

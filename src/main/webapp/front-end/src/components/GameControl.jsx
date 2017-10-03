@@ -11,7 +11,7 @@ import { startGame, updateCursorPosition } from '../actions.js';
 import GamePaletteContainer from './GamePalette.jsx';
 import GameMenuContainer from './GameMenu.jsx';
 import CalibrateContainer from './Calibrate.jsx';
-import { MOUSE, EYES } from '../utilities.js'
+import { MOUSE, EYES, TOBII4C } from '../utilities.js'
 
 
 class GameControl extends React.Component {
@@ -19,10 +19,19 @@ class GameControl extends React.Component {
   constructor(props) {
     super(props);
 
+
+    this.isTobii = this.isTobii.bind(this);
   }
 
-  componentDidMount() {
-    const gameContainer = this.gameContainer
+  isTobii(e, topOffset, leftOffset, updateCursorPosition) {
+    if(this.props.gameInput == TOBII4C){
+       const splitted = e.data.split("\t")
+       updateCursorPosition(splitted[1] - leftOffset, splitted[2] - topOffset - 50);
+    }
+  }
+
+  componentDidMount(props) {
+    const gameContainer = document.getElementById("gameContainer")
     const topOffset = gameContainer.offsetTop
     const leftOffset = gameContainer.offsetLeft
 
@@ -39,7 +48,12 @@ class GameControl extends React.Component {
         var yprediction = data.y - topOffset; //these y coordinates are relative to the viewport
         updateCursorPosition(xprediction, yprediction)
     })
+
+
+    new WebSocket("ws://10.211.55.3:2222/").onmessage = (e) => this.isTobii(e, topOffset, leftOffset, updateCursorPosition)
   }
+
+
 
   render() {
 
@@ -54,7 +68,7 @@ class GameControl extends React.Component {
         filler = <GameMenuContainer />
     }
 
-    return <div ref={gameContainer => {this.gameContainer = gameContainer}}>{filler}</div>
+    return <div id="gameContainer" ref={gameContainer => {this.gameContainer = gameContainer}}>{filler}</div>
   }
 };
 
