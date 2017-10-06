@@ -7,7 +7,7 @@ import {
   ButtonGroup
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { startGame, updateCursorPosition } from '../actions.js';
+import { startGame, updateCursorPosition, logHistory } from '../actions.js';
 import GamePaletteContainer from './GamePalette.jsx';
 import GameMenuContainer from './GameMenu.jsx';
 import CalibrateContainer from './Calibrate.jsx';
@@ -21,19 +21,39 @@ class GameControl extends React.Component {
 
 
     this.isTobii = this.isTobii.bind(this);
+    this.startLoggingHistory = this.startLoggingHistory.bind(this);
+    this.gameInProgress = this.gameInProgress.bind(this);
   }
 
   isTobii(e, topOffset, leftOffset, updateCursorPosition) {
     if(this.props.gameInput == TOBII4C){
-       const splitted = e.data.split("\t")
-       updateCursorPosition(splitted[1] - leftOffset, splitted[2] - topOffset - 50);
+       const coordinates = e.data.split("\t")
+       const resolutionMultiplier = 1
+       updateCursorPosition(coordinates[1]*resolutionMultiplier - leftOffset - window.screenX - (window.outerWidth - window.innerWidth), coordinates[2]*resolutionMultiplier - topOffset - window.screenY - (window.outerHeight - window.innerHeight));
     }
   }
 
+  gameInProgress() {
+    return this.props.gameInProgress
+  }
+
+  startLoggingHistory() {
+      const logHistory = this.props.logHistory
+      const inProgress = this.gameInProgress
+      var interval = setInterval(function() {
+        if(inProgress()){
+            logHistory()
+        }
+      }, 20);
+  }
+
   componentDidMount(props) {
+
     const gameContainer = document.getElementById("gameContainer")
     const topOffset = gameContainer.offsetTop
     const leftOffset = gameContainer.offsetLeft
+
+    this.startLoggingHistory()
 
     const updateCursorPosition = this.props.updateCursorPosition
 
@@ -87,6 +107,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     updateCursorPosition: (x, y) => {
         return dispatch(updateCursorPosition(x, y))
+    },
+    logHistory: () => {
+        return dispatch(logHistory())
     }
   }
 }

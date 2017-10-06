@@ -11,7 +11,8 @@ import {
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { startGame, setGameInput } from '../actions.js';
-import { MOUSE, EYES, TOBII4C } from '../utilities.js'
+import { MOUSE, EYES, TOBII4C } from '../utilities.js';
+import {history} from '../reducer.js';
 
 
 class GameMenu extends React.Component {
@@ -35,6 +36,25 @@ class GameMenu extends React.Component {
     }
   }
 
+  getHistoryCsv() {
+    var csvContent = ["frame,timestamp,cursorPositionX,cursorPositionY,mousePositionX,mousePositionY,targetPositionStartX,targetPositionStartY,targetPositionEndX,targetPositionEndY"];
+    history.forEach(function(e, index){
+       var entryArray = [ e.frame,e.timestamp,e.cursorPositionX,e.cursorPositionY,e.mousePositionX,e.mousePositionY,e.targetPositionStartX,e.targetPositionStartY,e.targetPositionEndX,e.targetPositionEndY]
+       var entryString = entryArray.join(",");
+       csvContent.push(entryString)
+    });
+
+    const csv = csvContent.join("%0A")
+
+    var a         = document.createElement('a');
+    a.href        = 'data:attachment/csv,' + csv;
+    a.target      = '_blank';
+    a.download    = 'myFile.csv';
+
+    document.body.appendChild(a);
+    a.click();
+  }
+
   render() {
 
     var gameOverMessage = <div><h1>Welcome to a Great Game!</h1></div>
@@ -48,6 +68,12 @@ class GameMenu extends React.Component {
             <h1>{gameOverText}</h1>
             <h3>Would you like to play again?</h3>
         </div>
+    }
+
+    var historyButton = null
+
+    if(this.props.game.get('score') > 0) {
+        historyButton = <Button onClick={this.getHistoryCsv}>Logs</Button>
     }
 
     return (
@@ -69,6 +95,8 @@ class GameMenu extends React.Component {
               </Radio>
             </FormGroup>
             <Button onClick={this.props.startGame}>Start Game</Button>
+            <br />
+            {historyButton}
         </div>
     )
   }

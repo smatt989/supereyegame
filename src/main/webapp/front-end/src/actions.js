@@ -16,6 +16,13 @@ export function updateCursorPosition(x, y) {
   }
 }
 
+export function updateMousePosition(x, y) {
+  return {
+    type: 'UPDATE_MOUSE_POSITION',
+    position: {x: x, y: y}
+  }
+}
+
 export function updateTargetPosition(x, y) {
   return {
     type: 'UPDATE_TARGET_POSITION',
@@ -82,4 +89,10 @@ export function createUserError(error) {
     type: 'CREATE_USER_ERROR',
     error: error
   };
+}
+
+export function logHistory() {
+  return {
+    type: 'LOG_HISTORY'
+  }
 }

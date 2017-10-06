@@ -7,7 +7,7 @@ import {
   ButtonGroup
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { updateCursorPosition, updateTargetPosition, endGame } from '../actions.js';
+import { updateCursorPosition, updateTargetPosition, updateMousePosition, endGame } from '../actions.js';
 import TargetBoxContainer from './TargetBox.jsx';
 import { MOUSE, EYES, TOBII4C } from '../utilities.js'
 
@@ -17,6 +17,7 @@ class GamePalette extends React.Component {
     super(props);
 
     this.updateCursorPosition = this.updateCursorPosition.bind(this)
+    this.updateMousePosition = this.updateMousePosition.bind(this)
     this.cursorIsInTarget = this.cursorIsInTarget.bind(this)
   }
 
@@ -24,6 +25,12 @@ class GamePalette extends React.Component {
     const x = e.pageX - e.currentTarget.offsetLeft
     const y = e.pageY - e.currentTarget.offsetTop
     this.props.updateCursorPosition(x, y)
+  }
+
+  updateMousePosition(e) {
+    const x = e.pageX - e.currentTarget.offsetLeft
+    const y = e.pageY - e.currentTarget.offsetTop
+    this.props.updateMousePosition(x, y)
   }
 
   cursorIsInTarget() {
@@ -104,6 +111,7 @@ class GamePalette extends React.Component {
     }
 
     const updateCursor = this.updateCursorPosition
+    const updateMouse = this.updateMousePosition
     const cursorIsInTarget = this.cursorIsInTarget
 
     const gameInput = this.props.gameInput
@@ -112,6 +120,7 @@ class GamePalette extends React.Component {
         if(gameInput == MOUSE){
             updateCursor(e)
         }
+        updateMouse(e)
     }
 
     return (
@@ -140,6 +149,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     updateCursorPosition: (x, y) => {
         return dispatch(updateCursorPosition(x, y))
+    },
+    updateMousePosition: (x, y) => {
+        return dispatch(updateMousePosition(x, y))
     },
     updateTargetPosition: (x, y) => {
         return dispatch(updateTargetPosition(x, y))
