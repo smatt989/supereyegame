@@ -96,3 +96,60 @@ export function logHistory() {
     type: 'LOG_HISTORY'
   }
 }
+
+export function incrementScore(points) {
+  return {
+    type: 'INCREMENT_SCORE',
+    points: points
+  }
+}
+
+export function incrementCurrentTargetClock(millis) {
+  return {
+    type: 'INCREMENT_CURRENT_TARGET_CLOCK',
+    millis: millis
+  }
+}
+
+export function updateInputOffsets(x, y) {
+  return {
+    type: 'UPDATE_INPUT_OFFSETS',
+    x: x,
+    y: y
+  }
+}
+
+export function setShowScore(show) {
+  return {
+    type: 'SET_SHOW_SCORE',
+    show: show
+  }
+}
+
+export function setShowTracker(show) {
+  return {
+    type: 'SET_SHOW_TRACKER',
+    show: show
+  }
+}
+
+export function setShowTargetHighlight(show) {
+  return {
+    type: 'SET_SHOW_TARGET_HIGHLIGHT',
+    show: show
+  }
+}
+
+export function setMaxOffset(offsetMax) {
+  return {
+    type: 'SET_MAX_OFFSET',
+    maxOffset: offsetMax
+  }
+}
+
+export function setTrackerOn(trackerOn) {
+  return {
+    type: 'SET_TRACKER_ON',
+    trackerOn: trackerOn
+  }
+}

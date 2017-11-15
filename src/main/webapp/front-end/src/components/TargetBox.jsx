@@ -7,7 +7,7 @@ import {
   ButtonGroup
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { completedCurrentTarget } from '../actions.js';
+import { completedCurrentTarget, incrementScore } from '../actions.js';
 
 
 class TargetBox extends React.Component {
@@ -28,14 +28,6 @@ class TargetBox extends React.Component {
     this.resetTimer()
   }
 
-  timerTick() {
-    if(this.state.timer > 0){
-        this.setState({timer: this.state.timer - 0.1})
-    } else {
-        this.props.completedCurrentTarget()
-    }
-  }
-
   componentDidUpdate() {
     this.updateTimer()
   }
@@ -44,13 +36,22 @@ class TargetBox extends React.Component {
     this.stopTimer()
   }
 
+  timerTick() {
+    if(this.state.timer > 0){
+        this.setState({timer: this.state.timer - 0.02})
+    } else {
+        this.props.incrementScore(1)
+        this.resetTimer()
+    }
+  }
+
   resetTimer() {
-    this.setState({timer: 1.0})
+    this.setState({timer: 0.1})
   }
 
   setTimer() {
     if(!this.state.interval){
-        this.setState({interval: setInterval(this.timerTick, 100)});
+        this.setState({interval: setInterval(this.timerTick, 20)});
     }
   }
 
@@ -71,11 +72,29 @@ class TargetBox extends React.Component {
 
   render() {
 
+    const targetStyleWidth = this.props.targetSize / 10
+    const targetStyleHeight = this.props.targetSize
+
     const targetStyle = {
-        height: this.props.targetSize + 'px',
-        width: this.props.targetSize + 'px',
-        top: this.props.targetPosition.get('y', 0),
-        left: this.props.targetPosition.get('x', 0)
+        top: this.props.targetPosition.get('y', 0) - targetStyleHeight / 2,
+        left: this.props.targetPosition.get('x', 0) - targetStyleHeight / 2,
+        height: targetStyleHeight + 'px',
+        width: targetStyleHeight + 'px'
+
+    }
+
+    const targetCrossHorizontal = {
+        left: 0,
+        top: (targetStyleHeight - targetStyleWidth) / 2,
+        height: targetStyleWidth+'px',
+        width: targetStyleHeight+'px'
+    }
+
+    const targetCrossVertical = {
+        top: 0,
+        left: (targetStyleHeight - targetStyleWidth) / 2,
+        width: targetStyleWidth+'px',
+        height: targetStyleHeight+'px'
     }
 
     var timerText = ""
@@ -85,13 +104,15 @@ class TargetBox extends React.Component {
 
     var inTargetClass = ""
 
-    if(this.props.inTarget){
+    if(this.props.inTarget && this.props.showTargetHighlight){
         inTargetClass = "in-target"
     }
 
     return (
       <div style={targetStyle} className={"target-box text-xs-center "+inTargetClass}>
-        <h2>{timerText}</h2>
+
+        <div style={targetCrossVertical} className="target-box-vertical"></div>
+        <div style={targetCrossHorizontal} className="target-box-horizontal"></div>
       </div>
     )
   }
@@ -100,7 +121,8 @@ class TargetBox extends React.Component {
 const mapStateToProps = state => {
   return {
     targetPosition: state.get('targetPosition'),
-    targetSize: state.get('targetSize')
+    targetSize: state.get('targetSize'),
+    showTargetHighlight: state.getIn(['game', 'showTargetHighlight'])
   }
 }
 
@@ -108,6 +130,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     completedCurrentTarget: () => {
         return dispatch(completedCurrentTarget())
+    },
+    incrementScore: (points) => {
+        return dispatch(incrementScore(points))
     }
   }
 }

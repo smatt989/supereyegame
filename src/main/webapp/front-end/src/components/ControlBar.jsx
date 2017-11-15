@@ -19,14 +19,16 @@ class ControlBar extends React.Component {
 
   render() {
 
-    const gameDetailsStyle = {display: this.props.gameInProgress ? 'inline' : 'none' }
+    const gameDetailsStyleClass = this.props.gameInProgress ? "should-display" : 'should-hide'
+
+    const scoreBoardStyleClass = this.props.showScore ? "should-display" : 'should-hide'
 
     return (
         <div id="control-bar">
             <h1>The Greatest Game</h1>
-            <div style={gameDetailsStyle} id="game-details">
-                <h3>{this.props.frame}</h3>
-                <h3>Score: {this.props.score}</h3>
+            <div className={gameDetailsStyleClass} id="game-details">
+                <h3 className={scoreBoardStyleClass}>{this.props.frame}</h3>
+                <h3 className={scoreBoardStyleClass}>Score: {this.props.score}</h3>
                 <Button bsSize="small" onClick={this.props.endGame}>Give Up</Button>
             </div>
         </div>
@@ -38,7 +40,8 @@ const mapStateToProps = state => {
   return {
     score: state.getIn(['game', 'score'], 0),
     gameInProgress: state.getIn(['game', 'gameInProgress']),
-    frame: state.get('frame')
+    frame: state.get('frame'),
+    showScore: state.getIn(['game', 'showScore'])
   }
 }
 

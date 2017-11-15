@@ -110,6 +110,14 @@ body {
     margin-top: 10px;
 }
 
+#game-details.should-display {
+    display: inline;
+}
+
+.should-hide {
+    display:none !important;
+}
+
 #game-details h3{
     margin-right: 20px;
     margin-left: 20px;
@@ -117,6 +125,10 @@ body {
 
 #game-menu {
     padding-top: 50px;
+}
+
+#game-menu .offset-input {
+    display: inline;
 }
 
 #game-palette {
@@ -147,6 +159,7 @@ body {
 	width: 10px;
 	height: 10px;
 	background: red;
+	//display:none;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
@@ -154,18 +167,19 @@ body {
 }
 
 .target-box {
-    background: @brand-light-blue;
     position: absolute;
     display: inline-block;
 }
 
-.target-box.in-target {
-    background: @brand-green;
+.target-box-horizontal, .target-box-vertical {
+    background: @brand-light-blue;
+    position: absolute;
+    display: inline-block;
+    content: "";
 }
 
-.target-box h2 {
-    margin-top: 22px;
-    color: white;
+.target-box.in-target .target-box-vertical, .target-box.in-target .target-box-horizontal {
+    background: @brand-green;
 }
 
 .calibration-target {

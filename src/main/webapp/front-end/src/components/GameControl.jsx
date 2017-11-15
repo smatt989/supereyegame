@@ -21,8 +21,6 @@ class GameControl extends React.Component {
 
 
     this.isTobii = this.isTobii.bind(this);
-    this.startLoggingHistory = this.startLoggingHistory.bind(this);
-    this.gameInProgress = this.gameInProgress.bind(this);
   }
 
   isTobii(e, topOffset, leftOffset, updateCursorPosition) {
@@ -33,27 +31,11 @@ class GameControl extends React.Component {
     }
   }
 
-  gameInProgress() {
-    return this.props.gameInProgress
-  }
-
-  startLoggingHistory() {
-      const logHistory = this.props.logHistory
-      const inProgress = this.gameInProgress
-      var interval = setInterval(function() {
-        if(inProgress()){
-            logHistory()
-        }
-      }, 20);
-  }
-
   componentDidMount(props) {
 
     const gameContainer = document.getElementById("gameContainer")
     const topOffset = gameContainer.offsetTop
     const leftOffset = gameContainer.offsetLeft
-
-    this.startLoggingHistory()
 
     const updateCursorPosition = this.props.updateCursorPosition
 
@@ -107,9 +89,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     updateCursorPosition: (x, y) => {
         return dispatch(updateCursorPosition(x, y))
-    },
-    logHistory: () => {
-        return dispatch(logHistory())
     }
   }
 }
